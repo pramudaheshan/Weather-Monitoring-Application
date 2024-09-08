@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="429.0" prefWidth="381.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.weathermonitoringapplication.WeatherClientController">
+    <children>
+        <!-- Search Field and Button -->
+        <TextField fx:id="searchField" layoutX="10.0" layoutY="23.0" prefHeight="39.0" prefWidth="300" promptText="Search city..." />
+        <Button layoutX="316.0" layoutY="21.0" onAction="#handleSearchButton" prefHeight="30" prefWidth="40">
+            <graphic>
+                <ImageView fitHeight="37.0" fitWidth="35.0">
+                    <Image url="@../../../Images/search.png" />
+                </ImageView>
+            </graphic>
+        </Button>
+
+        <!-- Weather Icon -->
+        <ImageView fx:id="weatherIcon" fitHeight="102.0" fitWidth="108.0" layoutX="135.0" layoutY="77.0">
+            <Image url="@../../../Images/cloud.png" />
+        </ImageView>
+
+        <!-- Temperature -->
+        <Label fx:id="temperatureLabel" layoutX="146.0" layoutY="179.0" style="-fx-font-size: 40px; -fx-font-weight: bold;" text="10°C" textAlignment="CENTER" />
+
+        <!-- Condition (e.g., Cloudy) -->
+        <Label fx:id="conditionLabel" layoutX="164.0" layoutY="239.0" style="-fx-font-size: 18px;" text="Cloudy" />
+
+        <!-- Humidity and Wind Speed Icons and Labels -->
+        <ImageView fx:id="humidityIcon" fitHeight="66.0" fitWidth="72.0" layoutX="44.0" layoutY="300.0">
+            <Image url="@../../../Images/humidity.png" />
+        </ImageView>
+        <Label fx:id="humidityLabel" layoutX="31.0" layoutY="377.0" style="-fx-font-size: 14px;" text="Humidity: 100%" />
+
+        <ImageView fx:id="windIcon" fitHeight="66.0" fitWidth="72.0" layoutX="274.0" layoutY="300.0">
+            <Image url="@../../../Images/wind.png" />
+        </ImageView>
+        <Label fx:id="windSpeedLabel" layoutX="265.0" layoutY="377.0" style="-fx-font-size: 14px;" text="Wind: 15 km/h" />
+
+    </children>
+</AnchorPane>
