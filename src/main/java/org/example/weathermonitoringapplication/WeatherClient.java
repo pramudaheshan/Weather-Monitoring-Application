@@ -15,8 +15,14 @@ public class WeatherClient {
     }
 
     public String requestWeatherData(String request) throws IOException {
-        out.println(request);
-        return in.readLine();
+        try {
+            out.println(request);
+            return in.readLine();
+        } catch (SocketTimeoutException e) {
+            System.err.println("Error: Server timeout.");
+            // Handle timeout (e.g., return an error message)
+            return "Error: Timeout";
+        }
     }
 
     public void close() throws IOException {
@@ -24,5 +30,22 @@ public class WeatherClient {
         out.close();
         socket.close();
     }
+
+
+    /*public static void main(String[] args) {
+        try {
+            WeatherClient client = new WeatherClient("localhost", 12345);
+            String response = client.requestWeatherData("London");
+            System.out.println(response);
+            response = client.requestWeatherData("Paris");
+            System.out.println(response);
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
 }
+
+
 

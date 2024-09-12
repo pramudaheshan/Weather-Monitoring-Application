@@ -25,18 +25,18 @@
         <Label fx:id="temperatureLabel" layoutX="146.0" layoutY="179.0" style="-fx-font-size: 40px; -fx-font-weight: bold;" text="10°C" textAlignment="CENTER" />
 
         <!-- Condition (e.g., Cloudy) -->
-        <Label fx:id="conditionLabel" layoutX="164.0" layoutY="239.0" style="-fx-font-size: 18px;" text="Cloudy" />
+        <Label fx:id="conditionLabel" layoutX="164.0" layoutY="239.0" style="-fx-font-size: 18px;" text="Cloudy" textAlignment="CENTER" />
 
         <!-- Humidity and Wind Speed Icons and Labels -->
         <ImageView fx:id="humidityIcon" fitHeight="66.0" fitWidth="72.0" layoutX="44.0" layoutY="300.0">
             <Image url="@../../../Images/humidity.png" />
         </ImageView>
-        <Label fx:id="humidityLabel" layoutX="31.0" layoutY="377.0" style="-fx-font-size: 14px;" text="Humidity: 100%" />
+        <Label fx:id="humidityLabel" layoutX="31.0" layoutY="377.0" style="-fx-font-size: 14px;" text="Humidity: 100%" textAlignment="CENTER" />
 
         <ImageView fx:id="windIcon" fitHeight="66.0" fitWidth="72.0" layoutX="274.0" layoutY="300.0">
             <Image url="@../../../Images/wind.png" />
         </ImageView>
-        <Label fx:id="windSpeedLabel" layoutX="265.0" layoutY="377.0" style="-fx-font-size: 14px;" text="Wind: 15 km/h" />
+        <Label fx:id="windSpeedLabel" layoutX="265.0" layoutY="377.0" style="-fx-font-size: 14px;" text="Wind: 15 km/h" textAlignment="CENTER" />
 
     </children>
 </AnchorPane>
