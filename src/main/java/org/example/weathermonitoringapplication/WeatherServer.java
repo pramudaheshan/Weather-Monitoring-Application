@@ -1,11 +1,12 @@
 package org.example.weathermonitoringapplication;
 
-import org.apache.http.*;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.net.Socket;
 
 public class WeatherServer {
     private ServerSocket serverSocket;
-    private final String API_KEY = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API key
+    private final String API_KEY = "83b08ebe74c045979d6185829241109";
 
     public WeatherServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -26,6 +27,7 @@ public class WeatherServer {
         while (true) {
             try {
                 Socket clientSocket = serverSocket.accept();
+                System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
                 new ClientHandler(clientSocket).start();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -46,24 +48,39 @@ public class WeatherServer {
 
         public void run() {
             try {
-                String city = in.readLine();
-                String weatherData = getWeatherData(city);
-                out.println(weatherData);
+                String city;
+                // Keep handling requests until the client disconnects or sends a termination signal
+                while ((city = in.readLine()) != null) {
+                    // If the client sends "exit", close the connection
+                    if (city.equalsIgnoreCase("exit")) {
+                        System.out.println("Client requested to terminate the connection.");
+                        break;
+                    }
+
+                    String weatherData = getWeatherData(city);
+                    out.println(weatherData);
+                }
+
             } catch (IOException e) {
+                // Log the specific exception and message
+                System.err.println("Error in ClientHandler: " + e.getMessage());
                 e.printStackTrace();
             } finally {
                 try {
+                    // Log when closing resources
+                    System.out.println("Closing connection for: " + socket.getInetAddress().getHostAddress());
                     in.close();
                     out.close();
                     socket.close();
                 } catch (IOException e) {
+                    System.err.println("Error closing resources: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
         }
 
         private String getWeatherData(String city) throws IOException {
-            String apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + API_KEY + "&units=metric";
+            String apiUrl = "https://api.weatherapi.com/v1/forecast.json?key=" + API_KEY + "&q=" + city + "&days=1&aqi=yes&alerts=yes";
 
             try (CloseableHttpClient client = HttpClients.createDefault()) {
                 HttpGet request = new HttpGet(apiUrl);
@@ -72,30 +89,34 @@ public class WeatherServer {
                     String json = EntityUtils.toString(entity);
 
                     // Extract relevant data from JSON response
+                    JSONObject jsonObject = new JSONObject(json);
+                    if (jsonObject.has("error")) {
+                        return "Error: Invalid city name. Please try again.";
+                    }
+
                     return parseWeatherData(json);
                 }
             }
         }
 
         private String parseWeatherData(String json) {
-            // Simple JSON parsing (requires org.json library or similar)
-            // For more advanced parsing, consider using a library like Jackson or Gson
-            org.json.JSONObject jsonObject = new org.json.JSONObject(json);
-            org.json.JSONObject main = jsonObject.getJSONObject("main");
-            org.json.JSONObject weather = jsonObject.getJSONArray("weather").getJSONObject(0);
+            JSONObject jsonObject = new JSONObject(json);
+            JSONObject current = jsonObject.getJSONObject("current");
+            JSONObject condition = current.getJSONObject("condition");
 
-            String temperature = main.getString("temp") + "°C";
-            String condition = weather.getString("description");
-            String humidity = main.getString("humidity") + "%";
-            String windSpeed = jsonObject.getJSONObject("wind").getString("speed") + " m/s";
+            String temperature = current.getInt("temp_c") + "°C";
+            String weatherCondition = condition.getString("text");
+            String humidity = current.getInt("humidity") + "%";
+            String windSpeed = current.getInt("wind_kph") + " km/h";
 
-            return temperature + "," + condition + "," + humidity + "," + windSpeed;
+            return temperature + "," + weatherCondition + "," + humidity + "," + windSpeed;
         }
     }
 
     public static void main(String[] args) {
         try {
             WeatherServer server = new WeatherServer(12345);
+            System.out.println("Weather server started on port 12345");
             server.start();
         } catch (IOException e) {
             e.printStackTrace();
