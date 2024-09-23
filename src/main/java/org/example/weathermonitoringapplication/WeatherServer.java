@@ -49,9 +49,9 @@ public class WeatherServer {
         public void run() {
             try {
                 String city;
-                // Keep handling requests until the client disconnects or sends a termination signal
+                
                 while ((city = in.readLine()) != null) {
-                    // If the client sends "exit", close the connection
+                   
                     if (city.equalsIgnoreCase("exit")) {
                         System.out.println("Client requested to terminate the connection.");
                         break;
@@ -62,12 +62,12 @@ public class WeatherServer {
                 }
 
             } catch (IOException e) {
-                // Log the specific exception and message
+              
                 System.err.println("Error in ClientHandler: " + e.getMessage());
                 e.printStackTrace();
             } finally {
                 try {
-                    // Log when closing resources
+                    
                     System.out.println("Closing connection for: " + socket.getInetAddress().getHostAddress());
                     in.close();
                     out.close();
@@ -88,7 +88,7 @@ public class WeatherServer {
                     HttpEntity entity = response.getEntity();
                     String json = EntityUtils.toString(entity);
 
-                    // Extract relevant data from JSON response
+                    
                     JSONObject jsonObject = new JSONObject(json);
                     if (jsonObject.has("error")) {
                         return "Error: Invalid city name. Please try again.";
