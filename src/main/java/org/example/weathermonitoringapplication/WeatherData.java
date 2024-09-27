@@ -6,6 +6,8 @@ public class WeatherData {
     private String humidity;
     private String windSpeed;
 
+
+
     public WeatherData(String temperature, String condition, String humidity, String windSpeed) {
         this.temperature = temperature;
         this.condition = condition;
