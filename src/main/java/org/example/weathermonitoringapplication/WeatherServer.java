@@ -17,7 +17,7 @@ import java.net.Socket;
 
 public class WeatherServer {
     private ServerSocket serverSocket;
-    private final String API_KEY = "83b08ebe74c045979d6185829241109";
+    private final String API_KEY = "2813a895f73147c0ae5135429242709";
 
     public WeatherServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -103,11 +103,13 @@ public class WeatherServer {
             JSONObject jsonObject = new JSONObject(json);
             JSONObject current = jsonObject.getJSONObject("current");
             JSONObject condition = current.getJSONObject("condition");
+            //JSONObject hour = jsonObject.getJSONObject
 
             String temperature = current.getInt("temp_c") + "°C";
             String weatherCondition = condition.getString("text");
             String humidity = current.getInt("humidity") + "%";
             String windSpeed = current.getInt("wind_kph") + " km/h";
+            //String time = current.
 
             return temperature + "," + weatherCondition + "," + humidity + "," + windSpeed;
         }

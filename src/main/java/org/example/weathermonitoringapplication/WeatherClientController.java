@@ -19,6 +19,9 @@ public class WeatherClientController {
     @FXML private Label humidityLabel;
     @FXML private ImageView windIcon;
     @FXML private Label windSpeedLabel;
+    @FXML private Label timeLabel;
+    @FXML private Label timeTempLabel;
+
 
     private WeatherClient client;
 
@@ -33,10 +36,12 @@ public class WeatherClientController {
     }
 
     private void resetData(){
-        temperatureLabel.setText("N/A");
-        conditionLabel.setText("N/A");
-        humidityLabel.setText("Humidity: N/A");
-        windSpeedLabel.setText("Wind: N/A");
+        temperatureLabel.setText("0");
+        conditionLabel.setText("null");
+        humidityLabel.setText("Humidity: 0");
+        windSpeedLabel.setText("Wind: 0");
+        timeLabel.setText("00:00");
+        timeTempLabel.setText("0 °C");
         weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/sun.png")));
     }
 
