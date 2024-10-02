@@ -1,5 +1,5 @@
 # Weather-Monitoring-System
-A Java-based Weather Monitoring Application that fetches real-time weather data and weather forecast data for te day from an external API and displays information such as temperature, humidity, wind speed, and more. This application is designed to be simple, fast, and efficient, providing a clear view of current weather conditions for a specified location.
+A Java-based Weather Monitoring Application that fetches real-time weather data and weather forecast data for the day from an external API and displays information such as temperature, humidity, wind speed, and more. This application is designed to be simple, fast, and efficient, providing a clear view of current weather conditions for a specified location.
 
 Features
 Retrieve real-time weather data from a third-party API 
