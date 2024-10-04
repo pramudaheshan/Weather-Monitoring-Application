@@ -13,12 +13,11 @@ import java.io.IOException;
 public class WeatherClientController {
 
     @FXML private TextField searchField;
+    @FXML private ImageView searchIcon;
     @FXML private ImageView weatherIcon;
     @FXML private Label temperatureLabel;
     @FXML private Label conditionLabel;
-    @FXML private ImageView humidityIcon;
     @FXML private Label humidityLabel;
-    @FXML private ImageView windIcon;
     @FXML private Label windSpeedLabel;
 
     @FXML private Label timeLabel1;
@@ -194,6 +193,18 @@ public class WeatherClientController {
             showError("Error connecting to the server.");
             e.printStackTrace();
         }
+    }
+
+
+
+    @FXML
+    private void handleMousePressed() {
+        searchIcon.setOpacity(0.7);
+    }
+
+    @FXML
+    private void handleMouseReleased() {
+        searchIcon.setOpacity(1.0);
     }
 
     private void showError(String errorMessage) {
