@@ -1,8 +1,6 @@
 package org.example.weathermonitoringapplication;
 
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 import java.io.*;
-import java.lang.reflect.GenericDeclaration;
 import java.net.*;
 
 public class WeatherClient {

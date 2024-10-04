@@ -53,7 +53,7 @@ public class WeatherClientController {
     public void initialize() {
         try {
             resetData();
-            client = new WeatherClient("localhost", 12345); // Modify with your server address and port
+            client = new WeatherClient("localhost", 12345);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,7 +96,7 @@ public class WeatherClientController {
 
     @FXML
     private void handleSearchButton(ActionEvent event) {
-        String city = searchField.getText().trim(); // Trim extra spaces
+        String city = searchField.getText().trim();
         if (city.isEmpty()) {
             showError("Please enter a city name.");
             return;
@@ -105,27 +105,27 @@ public class WeatherClientController {
         try {
             String response = client.requestWeatherData(city);
 
-            // Check if the response contains an error message
+
             if (response.startsWith("Error")) {
                 showError(response);
                 resetData();
                 return;
             }
 
-            // Split by lines
+
             String[] lines = response.split("\n");
 
-            // Parse current weather data (first line)
-            String[] currentWeatherData = lines[0].split(","); // Assuming first line has weather data separated by commas
+
+            String[] currentWeatherData = lines[0].split(",");
             if (currentWeatherData.length == 5) {
-                // Update UI with current weather data
-                temperatureLabel.setText(currentWeatherData[0]);  // temperature
-                conditionLabel.setText(currentWeatherData[1]);    // weather condition
-                humidityLabel.setText("Humidity: " + currentWeatherData[2]);  // humidity
-                windSpeedLabel.setText("Wind: " + currentWeatherData[3]); // wind speed
+
+                temperatureLabel.setText(currentWeatherData[0]);
+                conditionLabel.setText(currentWeatherData[1]);
+                humidityLabel.setText("Humidity: " + currentWeatherData[2]);
+                windSpeedLabel.setText("Wind: " + currentWeatherData[3]);
                 dateTimeLabel.setText("Local Date & Time: " + currentWeatherData[4]);
 
-                // Update weather icons based on condition
+
                 String condition = currentWeatherData[1].toLowerCase();
                 if (condition.contains("cloud")) {
                     weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/cloud.png")));
@@ -135,22 +135,21 @@ public class WeatherClientController {
                     weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/sun.png")));
                 }
             } else {
-                // Handle invalid or incomplete data
+
                 resetData();
                 showError("No valid weather data found for this city. Please try again.");
             }
 
-            // Parse forecast data (subsequent lines)
+
             if (lines.length > 1) {
-                // Loop through forecast data and assign to corresponding labels
-                for (int i = 1; i <= 6; i++) { // We are considering 6 forecast hours
+
+                for (int i = 1; i <= 6; i++) {
                     if (i < lines.length) {
                         String[] forecastData = lines[i].split(",");
                         String time = forecastData[0];
                         String temperature = forecastData[1];
                         String condition = forecastData[2];
 
-                        // Assigning the data to the corresponding forecast labels
                         switch (i) {
                             case 1:
                                 timeLabel1.setText(time);
@@ -186,7 +185,6 @@ public class WeatherClientController {
                     }
                 }
             } else {
-                // No forecast data available
                 showError("No forecast data available");
             }
 
@@ -197,7 +195,7 @@ public class WeatherClientController {
     }
 
     private void showError(String errorMessage) {
-        // Show error message on the GUI
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(null);
