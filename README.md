@@ -29,5 +29,6 @@ temperature, humidity, wind speed, and forecasts, which our backend processes fo
 ![image (1)](https://github.com/user-attachments/assets/1b54657d-4596-4c35-89bb-4a6d439ec53e)
 ![image (2)](https://github.com/user-attachments/assets/d372e48d-6225-49c5-a405-96ad06e708d6)
 ![image (3)](https://github.com/user-attachments/assets/9468732c-12bf-4d79-892d-b2b4e9694c8e)
-![image](https://github.com/user-attachments/assets/e15e89dc-679b-4f6a-803f-6c0ec7d8a23a)
+![image](https://github.com/user-attachments/assets/e15e89dc-679b-4f6a-803f-6c0ec7d8a23a) <br>
+Video DEMO : 
 [screen-capture.webm](https://github.com/user-attachments/assets/0d2510ab-1299-4b4c-b98e-9f8105663642)
