@@ -13,12 +13,11 @@ import java.io.IOException;
 public class WeatherClientController {
 
     @FXML private TextField searchField;
+    @FXML private ImageView searchIcon;
     @FXML private ImageView weatherIcon;
     @FXML private Label temperatureLabel;
     @FXML private Label conditionLabel;
-    @FXML private ImageView humidityIcon;
     @FXML private Label humidityLabel;
-    @FXML private ImageView windIcon;
     @FXML private Label windSpeedLabel;
 
     @FXML private Label timeLabel1;
@@ -60,65 +59,52 @@ public class WeatherClientController {
     }
 
     private void resetData() {
+        searchField.clear();
         temperatureLabel.setText("0");
         conditionLabel.setText("null");
         humidityLabel.setText("Humidity: 0");
         windSpeedLabel.setText("Wind: 0");
 
-        timeLabel1.setText("00:00");
-        timeTempLabel1.setText("0");
-        timeConditionLabel1.setText("null");
+        Label[] timeLabels = {timeLabel1, timeLabel2, timeLabel3, timeLabel4, timeLabel5, timeLabel6};
+        Label[] timeTempLabels = {timeTempLabel1, timeTempLabel2, timeTempLabel3, timeTempLabel4, timeTempLabel5, timeTempLabel6};
+        Label[] timeConditionLabels = {timeConditionLabel1, timeConditionLabel2, timeConditionLabel3, timeConditionLabel4, timeConditionLabel5, timeConditionLabel6};
 
-        timeLabel2.setText("00:00");
-        timeTempLabel2.setText("0");
-        timeConditionLabel2.setText("null");
-
-        timeLabel3.setText("00:00");
-        timeTempLabel3.setText("0");
-        timeConditionLabel3.setText("null");
-
-        timeLabel4.setText("00:00");
-        timeTempLabel4.setText("0");
-        timeConditionLabel4.setText("null");
-
-        timeLabel5.setText("00:00");
-        timeTempLabel5.setText("0");
-        timeConditionLabel5.setText("null");
-
-        timeLabel6.setText("00:00");
-        timeTempLabel6.setText("0");
-        timeConditionLabel6.setText("null");
+        for (int i = 0; i < 6; i++) {
+            timeLabels[i].setText("00:00");
+            timeTempLabels[i].setText("0");
+            timeConditionLabels[i].setText("null");
+        }
 
         dateTimeLabel.setText("null");
 
-        weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/sun.png")));
+        weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/notfound.png")));
     }
 
     @FXML
     private void handleSearchButton(ActionEvent event) {
         String city = searchField.getText().trim();
+
         if (city.isEmpty()) {
+            resetData();
             showError("Please enter a city name.");
             return;
         }
 
         try {
+
             String response = client.requestWeatherData(city);
 
-
             if (response.startsWith("Error")) {
-                showError(response);
                 resetData();
+                showError(response + "\n" + "Searched City: " + city + "\n" );
                 return;
             }
 
-
             String[] lines = response.split("\n");
-
-
             String[] currentWeatherData = lines[0].split(",");
-            if (currentWeatherData.length == 5) {
 
+
+            if (currentWeatherData.length == 5) {
                 temperatureLabel.setText(currentWeatherData[0]);
                 conditionLabel.setText(currentWeatherData[1]);
                 humidityLabel.setText("Humidity: " + currentWeatherData[2]);
@@ -127,22 +113,26 @@ public class WeatherClientController {
 
 
                 String condition = currentWeatherData[1].toLowerCase();
+
                 if (condition.contains("cloud")) {
                     weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/cloud.png")));
                 } else if (condition.contains("sunny")) {
                     weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/sunny.png")));
+                } else if (condition.contains("rain")) {
+                    weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/rain.png")));
+                } else if (condition.contains("snowflake") || condition.contains("snow")) {
+                    weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/snowflake.png")));
+                } else if (condition.contains("showers")) {
+                    weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/showers.png")));
                 } else {
-                    weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/sun.png")));
+                    weatherIcon.setImage(new Image(getClass().getResourceAsStream("/Images/notfound.png")));
                 }
             } else {
-
                 resetData();
-                showError("No valid weather data found for this city. Please try again.");
+                showError("No valid weather data found for this city.");
             }
 
-
             if (lines.length > 1) {
-
                 for (int i = 1; i <= 6; i++) {
                     if (i < lines.length) {
                         String[] forecastData = lines[i].split(",");
@@ -151,45 +141,45 @@ public class WeatherClientController {
                         String condition = forecastData[2];
 
                         switch (i) {
-                            case 1:
+                            case 1 -> {
                                 timeLabel1.setText(time);
                                 timeTempLabel1.setText(temperature);
                                 timeConditionLabel1.setText(condition);
-                                break;
-                            case 2:
+                            }
+                            case 2 -> {
                                 timeLabel2.setText(time);
                                 timeTempLabel2.setText(temperature);
                                 timeConditionLabel2.setText(condition);
-                                break;
-                            case 3:
+                            }
+                            case 3 -> {
                                 timeLabel3.setText(time);
                                 timeTempLabel3.setText(temperature);
                                 timeConditionLabel3.setText(condition);
-                                break;
-                            case 4:
+                            }
+                            case 4 -> {
                                 timeLabel4.setText(time);
                                 timeTempLabel4.setText(temperature);
                                 timeConditionLabel4.setText(condition);
-                                break;
-                            case 5:
+                            }
+                            case 5 -> {
                                 timeLabel5.setText(time);
                                 timeTempLabel5.setText(temperature);
                                 timeConditionLabel5.setText(condition);
-                                break;
-                            case 6:
+                            }
+                            case 6 -> {
                                 timeLabel6.setText(time);
                                 timeTempLabel6.setText(temperature);
                                 timeConditionLabel6.setText(condition);
-                                break;
+                            }
                         }
                     }
                 }
             } else {
-                showError("No forecast data available");
+                showError("No forecast data available.");
             }
 
         } catch (IOException e) {
-            showError("Error connecting to the server.");
+            showError("Error connecting to the server. Please try again.");
             e.printStackTrace();
         }
     }
@@ -201,5 +191,15 @@ public class WeatherClientController {
         alert.setHeaderText(null);
         alert.setContentText(errorMessage);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleMousePressed() {
+        searchIcon.setOpacity(0.7);
+    }
+
+    @FXML
+    private void handleMouseReleased() {
+        searchIcon.setOpacity(1.0);
     }
 }

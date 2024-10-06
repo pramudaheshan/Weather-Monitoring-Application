@@ -17,15 +17,28 @@ public class WeatherClient {
     public String requestWeatherData(String request) throws IOException {
         try {
             out.println(request);
+
+            String line = in.readLine(); // Read the first line
             StringBuilder responseBuilder = new StringBuilder();
-            String line;
-            while ((line = in.readLine()) != null) {
+
+            if (line.toLowerCase().contains("error")) {
+                return line;
+
+            } else {
+                // Append the first line (which we already read)
                 responseBuilder.append(line).append("\n");
-                if (line.isEmpty()) {
-                    break;
+
+                // Now read the remaining lines
+                while ((line = in.readLine()) != null) {
+                    responseBuilder.append(line).append("\n");
+                    if (line.isEmpty()) {  // Stop if an empty line is encountered
+                        break;
+                    }
                 }
+
+                // Return the full response
+                return responseBuilder.toString().trim();
             }
-            return responseBuilder.toString().trim();
         } catch (SocketTimeoutException e) {
             System.err.println("Error: Server timeout.");
             return "Error: Timeout";
@@ -38,17 +51,19 @@ public class WeatherClient {
         socket.close();
     }
 
+
+    //Use this for testing
     public static void main(String[] args) {
         try {
             WeatherClient client = new WeatherClient("localhost", 12345);
-            String response = client.requestWeatherData("London");
-            if (response.startsWith("Error")) {
-                System.out.println(response);
-            }
+            String response = client.requestWeatherData("f");
             System.out.println(response);
             client.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+
 }

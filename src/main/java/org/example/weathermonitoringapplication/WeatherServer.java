@@ -15,10 +15,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class WeatherServer {
     private ServerSocket serverSocket;
-    private final String API_KEY = "2813a895f73147c0ae5135429242709";
+    private final String API_KEY = "2813a895f73147c0ae5135429242709"; //Add your weather API
 
     public WeatherServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -51,25 +53,34 @@ public class WeatherServer {
             try {
                 String city;
 
+                // Keep the connection open until the client sends 'exit'
                 while ((city = in.readLine()) != null) {
+
+                    // Log to ensure city is being processed
+                    System.out.println("Received city: " + city);
 
                     if (city.equalsIgnoreCase("exit")) {
                         System.out.println("Client requested to terminate the connection.");
-                        break;
+                        break;  // Exit the loop to close the connection
                     }
 
+                    // Get weather data or an error message
                     String weatherData = getWeatherData(city);
-                    out.println(weatherData);
+
+                    // Send the weather data (or error) to the client
+                    out.println(weatherData);  // This will show the error if the city is invalid
+
+                    // Add log for debugging
+                    System.out.println("Sent weather data (or error) to client: " + weatherData);
                 }
 
             } catch (IOException e) {
-
                 System.err.println("Error in ClientHandler: " + e.getMessage());
                 e.printStackTrace();
 
             } finally {
+                // Make sure resources are closed when the connection ends
                 try {
-
                     System.out.println("Closing connection for: " + socket.getInetAddress().getHostAddress());
                     in.close();
                     out.close();
@@ -81,8 +92,10 @@ public class WeatherServer {
             }
         }
 
+
         private String getWeatherData(String city) throws IOException {
-            String apiUrl = "https://api.weatherapi.com/v1/forecast.json?key=" + API_KEY + "&q=" + city + "&days=1&aqi=yes&alerts=yes";
+            String encodedCity = URLEncoder.encode(city, StandardCharsets.UTF_8.toString());
+            String apiUrl = "https://api.weatherapi.com/v1/forecast.json?key=" + API_KEY + "&q=" + encodedCity + "&days=1&aqi=yes&alerts=yes";
 
             try (CloseableHttpClient client = HttpClients.createDefault()) {
                 HttpGet request = new HttpGet(apiUrl);
@@ -90,13 +103,17 @@ public class WeatherServer {
                     HttpEntity entity = response.getEntity();
                     String json = EntityUtils.toString(entity);
 
+                    System.out.println("API Response: " + json);  // Debugging line
 
+                    // Check if the JSON contains an error key or error message
                     JSONObject jsonObject = new JSONObject(json);
                     if (jsonObject.has("error")) {
-                        return "Error: Invalid city name. Please try again.";
+                        JSONObject errorObject = jsonObject.getJSONObject("error");
+                        String errorMessage = errorObject.getString("message");
+                        return "Error: " + errorMessage;
                     }
 
-                    return parseWeatherData(json);
+                    return parseWeatherData(json);  // Process if no error
                 }
             }
         }
@@ -106,7 +123,6 @@ public class WeatherServer {
             JSONObject current = jsonObject.getJSONObject("current");
             JSONObject condition = current.getJSONObject("condition");
             JSONObject location = jsonObject.getJSONObject("location");
-
 
 
             String temperature = current.getInt("temp_c") + "°C";
@@ -133,8 +149,6 @@ public class WeatherServer {
             String forecastData = forecastBuilder.toString();
 
 
-
-           
             return temperature + "," + weatherCondition + "," + humidity + "," + windSpeed + ","  + localDateTime + "," + "\n" + forecastData.trim() + "\n";
         }
     }
