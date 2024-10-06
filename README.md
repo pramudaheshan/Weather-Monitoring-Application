@@ -26,11 +26,10 @@ the code.<br>
 • Open Weather API: Provides weather data for various cities. The API returns information such as 
 temperature, humidity, wind speed, and forecasts, which our backend processes for the client.<br>
 
-
+![Screenshot 2024-10-06 121918](https://github.com/user-attachments/assets/28b4d018-7dfa-4320-bbdc-95342b905612) 
 ![Screenshot 2024-10-06 122205](https://github.com/user-attachments/assets/8c84a530-1332-4907-8785-7cf69c21def6)
 ![Screenshot 2024-10-06 123055](https://github.com/user-attachments/assets/f47a882a-1e13-4b8e-8fc6-e7f8786f8e9f)
-![Screenshot 2024-10-06 121958](https://github.com/user-attachments/assets/466051bf-ab4f-4dfd-8949-4262b1cd6294)
-![Screenshot 2024-10-06 121918](https://github.com/user-attachments/assets/28b4d018-7dfa-4320-bbdc-95342b905612) <br>
+![Screenshot 2024-10-06 121958](https://github.com/user-attachments/assets/466051bf-ab4f-4dfd-8949-4262b1cd6294)<br>
 
 Video DEMO : 
 [My Video.webm](https://github.com/user-attachments/assets/0a03200a-eb6a-4d52-b919-0d9f557fc365)
