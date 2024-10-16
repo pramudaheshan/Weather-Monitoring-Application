@@ -32,4 +32,5 @@ temperature, humidity, wind speed, and forecasts, which our backend processes fo
 ![Screenshot 2024-10-06 121958](https://github.com/user-attachments/assets/466051bf-ab4f-4dfd-8949-4262b1cd6294)<br>
 
 Video DEMO : 
+
 [My Video.webm](https://github.com/user-attachments/assets/0a03200a-eb6a-4d52-b919-0d9f557fc365)
